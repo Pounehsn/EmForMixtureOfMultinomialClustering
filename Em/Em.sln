@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nips", "Nips", "{643B9D21-8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmCalculation", "EmCalculation\EmCalculation.csproj", "{FAB21219-7AE8-4015-BD06-0633A05FB11B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmUnitTests", "EmUnitTests\EmUnitTests.csproj", "{10DAFA1C-F198-4C2C-8F3C-35707AF3C95A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{FAB21219-7AE8-4015-BD06-0633A05FB11B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB21219-7AE8-4015-BD06-0633A05FB11B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB21219-7AE8-4015-BD06-0633A05FB11B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10DAFA1C-F198-4C2C-8F3C-35707AF3C95A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10DAFA1C-F198-4C2C-8F3C-35707AF3C95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10DAFA1C-F198-4C2C-8F3C-35707AF3C95A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10DAFA1C-F198-4C2C-8F3C-35707AF3C95A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
