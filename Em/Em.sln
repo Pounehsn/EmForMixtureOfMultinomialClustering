@@ -7,21 +7,33 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Em.ConsoleApplication", "Em
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nips", "Nips", "{643B9D21-8CF0-4E04-897A-5BCB1A424906}"
 	ProjectSection(SolutionItems) = preProject
-		Coin Example.xlsx = Coin Example.xlsx
-		E.bmp = E.bmp
-		Em Visualization.bmp = Em Visualization.bmp
-		Information.txt = Information.txt
 		Literature.html = Literature.html
-		Mu.bmp = Mu.bmp
-		..\Nips\nips.libsvm = ..\Nips\nips.libsvm
-		..\Nips\nips.vocab = ..\Nips\nips.vocab
-		Pi.bmp = Pi.bmp
-		..\Nips\readme.txt = ..\Nips\readme.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmCalculation", "EmCalculation\EmCalculation.csproj", "{FAB21219-7AE8-4015-BD06-0633A05FB11B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmUnitTests", "EmUnitTests\EmUnitTests.csproj", "{10DAFA1C-F198-4C2C-8F3C-35707AF3C95A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Equations", "Equations", "{45E25206-1F3B-451B-9D82-CECE965817D6}"
+	ProjectSection(SolutionItems) = preProject
+		E.bmp = E.bmp
+		Information.txt = Information.txt
+		Mu.bmp = Mu.bmp
+		Pi.bmp = Pi.bmp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{643CE359-857D-417B-B945-FB6CB40E2E5E}"
+	ProjectSection(SolutionItems) = preProject
+		Coin Example.xlsx = Coin Example.xlsx
+		Em Visualization.bmp = Em Visualization.bmp
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{1698C17D-A172-48C2-84FC-94C7E3458939}"
+	ProjectSection(SolutionItems) = preProject
+		..\Nips\nips.libsvm = ..\Nips\nips.libsvm
+		..\Nips\nips.vocab = ..\Nips\nips.vocab
+		..\Nips\readme.txt = ..\Nips\readme.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,5 +56,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{45E25206-1F3B-451B-9D82-CECE965817D6} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
+		{643CE359-857D-417B-B945-FB6CB40E2E5E} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
+		{1698C17D-A172-48C2-84FC-94C7E3458939} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
 	EndGlobalSection
 EndGlobal

@@ -1,11 +1,11 @@
 K			Number of clusters (Current example = 5, 10, 20, 30)
 k			0 .. K
-Pi[k]		Percentage of documents falling under cluster k
+Pi[k]		Sum of percentages of all document falling under cluster k
 				- Sum of all {Pi[k] | k -> 1..K} = 1
 				- Initial value of Pi[k] = 1/K
 W			Number of unique words in all documents (Current example = 12376)
 w			0 .. W
-Mu[w][i]	Weight of word w in cluster k
+Mu[w][k]	Weight of word w in cluster k
 				- Sum of all {Mu[w][k] | w -> 1..W} = 1
 				- Should be initialized with a random number between 0.25 and 0.75 
 				 and then normalize to make them sum up to one.
