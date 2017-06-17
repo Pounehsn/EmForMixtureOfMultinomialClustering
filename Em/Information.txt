@@ -1,0 +1,9 @@
+K			Number of clusters
+k			0 .. K
+Pi[k]		Percentage of documents falling under cluster k
+				- Sum of all {Pi[k] | k -> 1..K} = 1
+				- Initial value of Pi[k] = 1/K
+W			Number of unique words in all documents
+w			0 .. W
+Mu[w][i]	Probability of a document containing word w end up in cluster k
+				- Sum of all {Mu[w][k] | k -> 1..k} = 1
