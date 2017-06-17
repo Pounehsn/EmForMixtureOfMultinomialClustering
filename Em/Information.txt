@@ -1,13 +1,13 @@
-K			Number of clusters
+K			Number of clusters (Current example = 5, 10, 20, 30)
 k			0 .. K
 Pi[k]		Percentage of documents falling under cluster k
 				- Sum of all {Pi[k] | k -> 1..K} = 1
 				- Initial value of Pi[k] = 1/K
-W			Number of unique words in all documents
+W			Number of unique words in all documents (Current example = 12376)
 w			0 .. W
 Mu[w][i]	Probability of a document containing word w end up in cluster k
 				- Sum of all {Mu[w][k] | k -> 1..k} = 1
-D			Number of documents
+D			Number of documents (Current example = 1500)
 d			0 .. D
 T[d][w]		Number of time word w is repeated in document d
 E[d][k]		Expectation for document d to end up in cluster k
