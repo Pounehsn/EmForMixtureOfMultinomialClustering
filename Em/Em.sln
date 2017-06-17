@@ -7,9 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Em.ConsoleApplication", "Em
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nips", "Nips", "{643B9D21-8CF0-4E04-897A-5BCB1A424906}"
 	ProjectSection(SolutionItems) = preProject
+		E.bmp = E.bmp
 		Information.txt = Information.txt
+		Mu.bmp = Mu.bmp
 		..\Nips\nips.libsvm = ..\Nips\nips.libsvm
 		..\Nips\nips.vocab = ..\Nips\nips.vocab
+		Pi.bmp = Pi.bmp
 		..\Nips\readme.txt = ..\Nips\readme.txt
 	EndProjectSection
 EndProject

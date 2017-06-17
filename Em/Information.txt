@@ -7,3 +7,7 @@ W			Number of unique words in all documents
 w			0 .. W
 Mu[w][i]	Probability of a document containing word w end up in cluster k
 				- Sum of all {Mu[w][k] | k -> 1..k} = 1
+D			Number of documents
+d			0 .. D
+T[d][w]		Number of time word w is repeated in document d
+E[d][k]		Expectation for document d to end up in cluster k
