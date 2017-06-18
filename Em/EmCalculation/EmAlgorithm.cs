@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EmCalculation
 {
@@ -14,9 +15,20 @@ namespace EmCalculation
             Mu = new double[numberOfClusters, numberOfWords];
             Pi = new double[numberOfClusters];
             E = new double[numberOfDocuments, numberOfClusters];
+            _nd = new int[numberOfDocuments];
+            for (var dIndex = 0; dIndex < numberOfDocuments; dIndex++)
+            {
+                for (var wIndex = 0; wIndex < numberOfWords; wIndex++)
+                {
+                    _nd[dIndex] += wordInDocumentFrequency[dIndex, wIndex];
+                }
+            }
+            _nk = new double[K];
         }
 
         private readonly Random _random;
+        private readonly int[] _nd;
+        private readonly double[] _nk;
 
         private int W { get; }
         private int D { get; }
@@ -69,14 +81,66 @@ namespace EmCalculation
             return Math.Sqrt(sum) < 1E-6;
         }
 
-        private void IterationM(int iteration)
-        {
-            Log($"{iteration} {nameof(IterationM)} completed");
-        }
-
         private void IterationE(int iteration)
         {
+            for (var d = 0; d < D; d++)
+            {
+                var sum = 0.0;
+                for (var k = 0; k < K; k++)
+                {
+                    var mul = 1.0;
+                    for (var w = 0; w < W; w++)
+                    {
+                        mul *= Math.Pow(Mu[k, w], T[d, w]);
+                    }
+                    sum += E[d, k] = Pi[k] * mul;
+                }
+
+                for (var k = 0; k < K; k++)
+                {
+                    E[d, k] /= sum;
+                }
+            }
+
             Log($"{iteration} {nameof(IterationE)} completed");
+        }
+
+        private void IterationM(int iteration)
+        {
+            for (var k = 0; k < K; k++)
+            {
+                var sum = 0.0;
+                for (var d = 0; d < D; d++)
+                {
+                    sum += E[d, k] * _nd[d];
+                }
+                _nk[k] = sum;
+            }
+
+            for (var k = 0; k < K; k++)
+            {
+                for (var w = 0; w < W; w++)
+                {
+                    var sum = 0.0;
+                    for (var d = 0; d < D; d++)
+                    {
+                        sum += E[d, k] * T[d, w];
+                    }
+                    Mu[k, w] = sum / _nk[k];
+                }
+            }
+
+            for (var k = 0; k < K; k++)
+            {
+                var sum = 0.0;
+                for (var d = 0; d < D; d++)
+                {
+                    sum += E[d, k];
+                }
+                Pi[k] = sum / D;
+            }
+
+            Log($"{iteration} {nameof(IterationM)} completed");
         }
 
         public int[] ClassifyDocuments()
@@ -118,9 +182,10 @@ namespace EmCalculation
 
         private void InitializePi()
         {
-            for (var i = 0; i < K - 1; i++)
+            var initialValue = 1.0 / K;
+            for (var i = 0; i < K ; i++)
             {
-                Pi[i] = 1.0 / K;
+                Pi[i] = initialValue;
             }
         }
 

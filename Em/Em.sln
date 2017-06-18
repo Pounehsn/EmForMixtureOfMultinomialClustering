@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Em.ConsoleApplication", "Em.ConsoleApplication\Em.ConsoleApplication.csproj", "{B4C99896-9652-4C34-87A9-EC06EFFEE0EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nips", "Nips", "{643B9D21-8CF0-4E04-897A-5BCB1A424906}"
-	ProjectSection(SolutionItems) = preProject
-		Literature.html = Literature.html
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmCalculation", "EmCalculation\EmCalculation.csproj", "{FAB21219-7AE8-4015-BD06-0633A05FB11B}"
 EndProject
@@ -19,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Equations", "Equations", "{
 		E.bmp = E.bmp
 		Information.txt = Information.txt
 		Mu.bmp = Mu.bmp
+		nd.bmp = nd.bmp
+		nk.bmp = nk.bmp
 		Pi.bmp = Pi.bmp
 	EndProjectSection
 EndProject
@@ -33,6 +32,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{1698C17D-A
 		..\Nips\nips.libsvm = ..\Nips\nips.libsvm
 		..\Nips\nips.vocab = ..\Nips\nips.vocab
 		..\Nips\readme.txt = ..\Nips\readme.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Literature", "Literature", "{E34CCE3A-B1D9-4FBD-8453-CCF9FB39617C}"
+	ProjectSection(SolutionItems) = preProject
+		LiteratureLinks.html = LiteratureLinks.html
+		Problem Set 4 Final.pdf = Problem Set 4 Final.pdf
+		Problem Set 4.pdf = Problem Set 4.pdf
 	EndProjectSection
 EndProject
 Global
@@ -61,5 +67,6 @@ Global
 		{45E25206-1F3B-451B-9D82-CECE965817D6} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
 		{643CE359-857D-417B-B945-FB6CB40E2E5E} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
 		{1698C17D-A172-48C2-84FC-94C7E3458939} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
+		{E34CCE3A-B1D9-4FBD-8453-CCF9FB39617C} = {643B9D21-8CF0-4E04-897A-5BCB1A424906}
 	EndGlobalSection
 EndGlobal

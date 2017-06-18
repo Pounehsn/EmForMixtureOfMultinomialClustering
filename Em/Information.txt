@@ -1,6 +1,6 @@
 K			Number of clusters (Current example = 5, 10, 20, 30)
 k			0 .. K
-Pi[k]		Sum of percentages of all document falling under cluster k
+Pi[k]		Sum of percentages of all documents falling under cluster k
 				- Sum of all {Pi[k] | k -> 1..K} = 1
 				- Initial value of Pi[k] = 1/K
 W			Number of unique words in all documents (Current example = 12376)
