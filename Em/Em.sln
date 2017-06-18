@@ -29,9 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{643C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{1698C17D-A172-48C2-84FC-94C7E3458939}"
 	ProjectSection(SolutionItems) = preProject
-		..\Nips\nips.libsvm = ..\Nips\nips.libsvm
-		..\Nips\nips.vocab = ..\Nips\nips.vocab
-		..\Nips\readme.txt = ..\Nips\readme.txt
+		nips.libsvm = nips.libsvm
+		nips.vocab = nips.vocab
+		readme.txt = readme.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Literature", "Literature", "{E34CCE3A-B1D9-4FBD-8453-CCF9FB39617C}"
