@@ -35,11 +35,11 @@ namespace EmUnitTests
             var documentClass = algorithm.ClassifyDocuments();
 
             //Assert
-            Assert.AreEqual(0, documentClass[0]);
-            Assert.AreEqual(1, documentClass[1]);
-            Assert.AreEqual(1, documentClass[2]);
-            Assert.AreEqual(0, documentClass[3]);
-            Assert.AreEqual(1, documentClass[4]);
+            Assert.AreEqual(1, documentClass[0]);
+            Assert.AreEqual(0, documentClass[1]);
+            Assert.AreEqual(0, documentClass[2]);
+            Assert.AreEqual(1, documentClass[3]);
+            Assert.AreEqual(0, documentClass[4]);
         }
     }
 }

@@ -44,8 +44,8 @@ namespace EmCalculation
 
             var previousePi = new double[K];
             var previouseMu = new double[K, W];
-
-            for (var iteration = 0; iteration < maxIteration; iteration++)
+            var iteration = 0;
+            for (; iteration < maxIteration; iteration++)
             {
                 Array.Copy(Pi, previousePi, K);
                 Array.Copy(Mu, previouseMu, K * W);
@@ -61,6 +61,8 @@ namespace EmCalculation
                 )
                     break;
             }
+
+            Log($"{nameof(Train)} completed in {iteration}");
         }
 
         private bool IsConverged(double[,] previouseMu, double[] previousePi)
