@@ -29,6 +29,14 @@ namespace Em.ConsoleApplication
             const int numberOfClusters = 5;
             var wordInDocumentFrequency = new int[maxDocumentId + 1, maxWordId + 1];
 
+            for (var i = 0; i < maxDocumentId + 1; i++)
+            {
+                for (var j = 0; j < maxWordId + 1; j++)
+                {
+                    wordInDocumentFrequency[i, j] = 1;
+                }
+            }
+
             using (var loder = new PaperInfoLoader(new FileInfo(inputFile)))
             {
                 foreach (var wordInfo in loder.LoadWordInfo())

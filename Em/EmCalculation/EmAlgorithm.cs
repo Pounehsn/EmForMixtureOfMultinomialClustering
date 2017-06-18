@@ -13,7 +13,7 @@ namespace EmCalculation
             var numberOfWords = W = wordInDocumentFrequency.GetLength(1);
             Mu = new double[numberOfClusters, numberOfWords];
             Pi = new double[numberOfClusters];
-            E = new double[numberOfDocuments, numberOfClusters];
+            E = new BigDecimal[numberOfDocuments, numberOfClusters];
             _nd = new int[numberOfDocuments];
             for (var dIndex = 0; dIndex < numberOfDocuments; dIndex++)
             {
@@ -35,7 +35,7 @@ namespace EmCalculation
         private int[,] T { get; }
         private double[] Pi { get; }
         private double[,] Mu { get; }
-        private double[,] E { get; }
+        private BigDecimal[,] E { get; }
 
         public void Train(int maxIteration)
         {
@@ -88,13 +88,13 @@ namespace EmCalculation
         {
             for (var d = 0; d < D; d++)
             {
-                var sum = 0.0;
+                BigDecimal sum = 0.0;
                 for (var k = 0; k < K; k++)
                 {
-                    var mul = 1.0;
+                    BigDecimal mul = 1.0;
                     for (var w = 0; w < W; w++)
                     {
-                        mul *= Math.Pow(Mu[k, w], T[d, w]);
+                        mul *= BigDecimal.Pow(Mu[k, w], T[d, w]);
                     }
                     sum += E[d, k] = Pi[k] * mul;
                 }
@@ -115,7 +115,7 @@ namespace EmCalculation
                 var sum = 0.0;
                 for (var d = 0; d < D; d++)
                 {
-                    sum += E[d, k] * _nd[d];
+                    sum += (double)E[d, k] * _nd[d];
                 }
                 _nk[k] = sum;
             }
@@ -124,23 +124,23 @@ namespace EmCalculation
             {
                 for (var w = 0; w < W; w++)
                 {
-                    var sum = 0.0;
+                    BigDecimal sum = 0.0;
                     for (var d = 0; d < D; d++)
                     {
                         sum += E[d, k] * T[d, w];
                     }
-                    Mu[k, w] = sum / _nk[k];
+                    Mu[k, w] = (double)sum / _nk[k];
                 }
             }
 
             for (var k = 0; k < K; k++)
             {
-                var sum = 0.0;
+                BigDecimal sum = 0.0;
                 for (var d = 0; d < D; d++)
                 {
                     sum += E[d, k];
                 }
-                Pi[k] = sum / D;
+                Pi[k] = (double)sum / D;
             }
 
             Log($"{iteration} {nameof(IterationM)} completed");
