@@ -13,7 +13,7 @@ namespace EmCalculation
             var numberOfWords = W = wordInDocumentFrequency.GetLength(1);
             Mu = new double[numberOfClusters, numberOfWords];
             Pi = new double[numberOfClusters];
-            E = new double[numberOfClusters, numberOfDocuments];
+            E = new double[numberOfDocuments, numberOfClusters];
         }
 
         private readonly Random _random;
@@ -38,8 +38,8 @@ namespace EmCalculation
                 Array.Copy(Pi, previousePi, K);
                 Array.Copy(Mu, previouseMu, K * W);
 
-                IterationE();
-                IterationM();
+                IterationE(iteration);
+                IterationM(iteration);
 
                 if (
                     IsConverged(
@@ -69,25 +69,51 @@ namespace EmCalculation
             return Math.Sqrt(sum) < 1E-6;
         }
 
-        private void IterationM()
+        private void IterationM(int iteration)
         {
-            throw new NotImplementedException();
+            Log($"{iteration} {nameof(IterationM)} completed");
         }
 
-        private void IterationE()
+        private void IterationE(int iteration)
         {
-            throw new NotImplementedException();
+            Log($"{iteration} {nameof(IterationE)} completed");
         }
 
-        public int[] ClassifyDocument()
+        public int[] ClassifyDocuments()
         {
-            throw new NotImplementedException();
+            var result = new int[D];
+
+            for (var d = 0; d < D; d++)
+            {
+                var clusterIndex = 0;
+                var clusterExpectation = E[d, clusterIndex];
+                for (var k = 1; k < K; k++)
+                {
+                    if (!(E[d, k] > clusterExpectation))
+                        continue;
+
+                    clusterExpectation = E[d, k];
+                    clusterIndex = k;
+                }
+
+                result[d] = clusterIndex;
+            }
+
+            Log($"{nameof(ClassifyDocuments)} is completed");
+            return result;
         }
 
         private void Initialize()
         {
             InitializePi();
+            Log($"{nameof(InitializePi)} is completed");
             InitializeMu();
+            Log($"{nameof(InitializeMu)} is completed");
+        }
+
+        private void Log(string message)
+        {
+            Console.WriteLine(message);
         }
 
         private void InitializePi()

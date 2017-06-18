@@ -32,7 +32,7 @@ namespace EmUnitTests
             algorithm.Train(100);
 
             //Act
-            var documentClass = algorithm.ClassifyDocument();
+            var documentClass = algorithm.ClassifyDocuments();
 
             //Assert
             Assert.AreEqual(0, documentClass[0]);
