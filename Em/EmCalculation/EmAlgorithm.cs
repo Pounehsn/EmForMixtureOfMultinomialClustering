@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace EmCalculation
 {
@@ -80,7 +79,9 @@ namespace EmCalculation
                 }
             }
 
-            return Math.Sqrt(sum) < 1E-6;
+            var changeFromPreviouseIteration = Math.Sqrt(sum);
+            Log($"Change from previous iteration {changeFromPreviouseIteration}.");
+            return changeFromPreviouseIteration < 1E-6;
         }
 
         private void IterationE(int iteration)
