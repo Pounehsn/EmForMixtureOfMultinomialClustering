@@ -5,7 +5,7 @@ namespace EmCalculation
     public interface IEmAlgorithm
     {
         void Train(int maxIteration);
-        int[] ClassifyDocuments();
+        int[] GetDocumentsCluster();
         IEnumerable<int> GetWordsOrderedByMu(int cluster);
     }
 }

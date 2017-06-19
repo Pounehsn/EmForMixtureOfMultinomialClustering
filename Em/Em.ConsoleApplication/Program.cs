@@ -54,7 +54,7 @@ namespace Em.ConsoleApplication
 
             em.Train(1000);
 
-            var classified = em.ClassifyDocuments();
+            var classified = em.GetDocumentsCluster();
 
             using (var textWriter = new FileInfo(outputFile).CreateText())
             {

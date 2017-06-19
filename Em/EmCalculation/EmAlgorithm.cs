@@ -64,12 +64,12 @@ namespace EmCalculation
             Log($"{nameof(Train)} completed in {iteration}");
         }
 
-        public IEnumerable<int> GetWordsOrderedByMu(int cluster) => Enumerable.Range(0, D)
+        public IEnumerable<int> GetWordsOrderedByMu(int cluster) => Enumerable.Range(0, W)
             .Select(i => new {index = i, mu = Mu[cluster, i]})
             .OrderByDescending(i=>i.mu)
             .Select(i=>i.index);
 
-        public int[] ClassifyDocuments()
+        public int[] GetDocumentsCluster()
         {
             var result = new int[D];
 
@@ -89,7 +89,7 @@ namespace EmCalculation
                 result[d] = clusterIndex;
             }
 
-            Log($"{nameof(ClassifyDocuments)} is completed");
+            Log($"{nameof(GetDocumentsCluster)} is completed");
             return result;
         }
 
