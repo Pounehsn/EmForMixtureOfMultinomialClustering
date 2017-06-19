@@ -54,7 +54,7 @@ namespace Em.ConsoleApplication
             using (var textWriter = new FileInfo(outputFile).CreateText())
             {
                 textWriter.WriteLine(
-                    string.Join(" ", classified.Select((i, v) => $"{i}:{v}"))
+                    string.Join(" ", classified.Select((v, i) => $"{i}:{v}"))
                 );
             }
 

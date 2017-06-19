@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigDecimal.cs" />
     <Compile Include="EmAlgorithm.cs" />
     <Compile Include="IEmAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

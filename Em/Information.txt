@@ -13,3 +13,6 @@ D			Number of documents (Current example = 1500)
 d			0 .. D
 T[d][w]		Number of time word w is repeated in document d
 E[d][k]		Expectation for document d to end up in cluster k
+
+Result
+			k: Pi[k], {Mu[k, w] | w -> 1..W} 

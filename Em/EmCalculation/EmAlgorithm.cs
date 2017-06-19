@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Numerics;
+using System.Threading.Tasks;
 
 namespace EmCalculation
 {
@@ -11,10 +13,10 @@ namespace EmCalculation
             T = wordInDocumentFrequency;
             var numberOfDocuments = D = wordInDocumentFrequency.GetLength(0);
             var numberOfWords = W = wordInDocumentFrequency.GetLength(1);
-            Mu = new double[numberOfClusters, numberOfWords];
-            Pi = new double[numberOfClusters];
-            E = new BigDecimal[numberOfDocuments, numberOfClusters];
-            _nd = new int[numberOfDocuments];
+            Mu = new BigInteger[numberOfClusters, numberOfWords];
+            Pi = new BigInteger[numberOfClusters];
+            E = new BigInteger[numberOfDocuments, numberOfClusters];
+            _nd = new BigInteger[numberOfDocuments];
             for (var dIndex = 0; dIndex < numberOfDocuments; dIndex++)
             {
                 for (var wIndex = 0; wIndex < numberOfWords; wIndex++)
@@ -22,27 +24,29 @@ namespace EmCalculation
                     _nd[dIndex] += wordInDocumentFrequency[dIndex, wIndex];
                 }
             }
-            _nk = new double[K];
+            _nk = new BigInteger[K];
         }
 
         private readonly Random _random;
-        private readonly int[] _nd;
-        private readonly double[] _nk;
+        private readonly BigInteger[] _nd;
+        private readonly BigInteger[] _nk;
+
+        private const int Max = int.MaxValue;
 
         private int W { get; }
         private int D { get; }
         private int K { get; }
         private int[,] T { get; }
-        private double[] Pi { get; }
-        private double[,] Mu { get; }
-        private BigDecimal[,] E { get; }
+        private BigInteger[] Pi { get; }
+        private BigInteger[,] Mu { get; }
+        private BigInteger[,] E { get; }
 
         public void Train(int maxIteration)
         {
             Initialize();
 
-            var previousePi = new double[K];
-            var previouseMu = new double[K, W];
+            var previousePi = new BigInteger[K];
+            var previouseMu = new BigInteger[K, W];
             var iteration = 0;
             for (; iteration < maxIteration; iteration++)
             {
@@ -52,21 +56,15 @@ namespace EmCalculation
                 IterationE(iteration);
                 IterationM(iteration);
 
-                if (
-                    IsConverged(
-                        previouseMu,
-                        previousePi
-                    )
-                )
-                    break;
+                if (IsConverged(previouseMu, previousePi)) break;
             }
 
             Log($"{nameof(Train)} completed in {iteration}");
         }
 
-        private bool IsConverged(double[,] previouseMu, double[] previousePi)
+        private bool IsConverged(BigInteger[,] previouseMu, BigInteger[] previousePi)
         {
-            var sum = 0.0;
+            BigInteger sum = 0;
 
             for (var k = 0; k < K; k++)
             {
@@ -79,31 +77,36 @@ namespace EmCalculation
                 }
             }
 
-            var changeFromPreviouseIteration = Math.Sqrt(sum);
+            var changeFromPreviouseIteration = Math.Sqrt((double)sum);
             Log($"Change from previous iteration {changeFromPreviouseIteration}.");
-            return changeFromPreviouseIteration < 1E-6;
+            return changeFromPreviouseIteration < 1;
         }
 
         private void IterationE(int iteration)
         {
-            for (var d = 0; d < D; d++)
-            {
-                BigDecimal sum = 0.0;
-                for (var k = 0; k < K; k++)
+            Parallel.For(
+                0,
+                D,
+                d =>
                 {
-                    BigDecimal mul = 1.0;
-                    for (var w = 0; w < W; w++)
+                    Log($"Started iteration {iteration} document {d}.");
+                    BigInteger sum = 0;
+                    for (var k = 0; k < K; k++)
                     {
-                        mul *= BigDecimal.Pow(Mu[k, w], T[d, w]);
+                        BigInteger mul = 1;
+                        for (var w = 0; w < W; w++)
+                        {
+                            mul *= BigInteger.Pow(Mu[k, w], T[d, w]);
+                        }
+                        sum += E[d, k] = Pi[k] * mul;
                     }
-                    sum += E[d, k] = Pi[k] * mul;
-                }
 
-                for (var k = 0; k < K; k++)
-                {
-                    E[d, k] /= sum;
+                    for (var k = 0; k < K; k++)
+                    {
+                        E[d, k] = E[d, k] * Max / sum;
+                    }
                 }
-            }
+            );
 
             Log($"{iteration} {nameof(IterationE)} completed");
         }
@@ -112,10 +115,10 @@ namespace EmCalculation
         {
             for (var k = 0; k < K; k++)
             {
-                var sum = 0.0;
+                BigInteger sum = 0;
                 for (var d = 0; d < D; d++)
                 {
-                    sum += (double)E[d, k] * _nd[d];
+                    sum += E[d, k] * _nd[d];
                 }
                 _nk[k] = sum;
             }
@@ -124,23 +127,23 @@ namespace EmCalculation
             {
                 for (var w = 0; w < W; w++)
                 {
-                    BigDecimal sum = 0.0;
+                    BigInteger sum = 1;
                     for (var d = 0; d < D; d++)
                     {
                         sum += E[d, k] * T[d, w];
                     }
-                    Mu[k, w] = (double)sum / _nk[k];
+                    Mu[k, w] = sum * Max / _nk[k];
                 }
             }
 
             for (var k = 0; k < K; k++)
             {
-                BigDecimal sum = 0.0;
+                BigInteger sum = 1;
                 for (var d = 0; d < D; d++)
                 {
                     sum += E[d, k];
                 }
-                Pi[k] = (double)sum / D;
+                Pi[k] = sum / D;
             }
 
             Log($"{iteration} {nameof(IterationM)} completed");
@@ -185,8 +188,8 @@ namespace EmCalculation
 
         private void InitializePi()
         {
-            var initialValue = 1.0 / K;
-            for (var i = 0; i < K ; i++)
+            var initialValue = Max / K;
+            for (var i = 0; i < K; i++)
             {
                 Pi[i] = initialValue;
             }
@@ -196,7 +199,7 @@ namespace EmCalculation
         {
             for (var k = 0; k < K; k++)
             {
-                var weightSum = 0.0;
+                BigInteger weightSum = 0;
                 for (var w = 0; w < W; w++)
                 {
                     var weight = Mu[k, w] = NextRandomFrom25To75Percent();
@@ -204,12 +207,12 @@ namespace EmCalculation
                 }
                 for (var w = 0; w < W; w++)
                 {
-                    Mu[k, w] /= weightSum;
+                    Mu[k, w] = Mu[k, w] * Max / weightSum;
                 }
             }
         }
 
-        private double NextRandomFrom25To75Percent() =>
-            _random.NextDouble() / 2 + 0.25;
+        private int NextRandomFrom25To75Percent() =>
+            _random.Next(0, Max) / 2 + Max / 4;
     }
 }
