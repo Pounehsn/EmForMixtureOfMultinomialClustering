@@ -54,13 +54,14 @@ namespace Em.ConsoleApplication
 
             em.Train(1000);
 
-            var classified = em.GetDocumentsCluster();
-
             using (var textWriter = new FileInfo(outputFile).CreateText())
             {
-                textWriter.WriteLine(
-                    string.Join(" ", classified.Select((v, i) => $"{i}:{v}"))
-                );
+                for (var k = 0; k < numberOfClusters; k++)
+                {
+                    textWriter.WriteLine(
+                        $"{k} : {string.Join("\t", em.GetWordsOrderedByMu(k).Take(10))}"
+                    );
+                }
             }
 
             Console.WriteLine("Done");

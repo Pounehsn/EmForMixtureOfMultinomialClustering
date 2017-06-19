@@ -1,8 +1,8 @@
 ﻿namespace Em.ConsoleApplication
 {
-    public struct WordInfo
+    public struct WordUsageInfo
     {
-        public WordInfo(int paperId, int documentId, int wordFrequency)
+        public WordUsageInfo(int paperId, int documentId, int wordFrequency)
         {
             DocumentId = paperId;
             WordId = documentId;

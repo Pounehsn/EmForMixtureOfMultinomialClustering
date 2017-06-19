@@ -13,7 +13,7 @@ namespace Em.ConsoleApplication
 
         private readonly StreamReader _reader;
 
-        public IEnumerable<WordInfo> LoadWordInfo()
+        public IEnumerable<WordUsageInfo> LoadWordInfo()
         {
             while (!_reader.EndOfStream)
             {
@@ -31,7 +31,7 @@ namespace Em.ConsoleApplication
                     var wordIndex = int.Parse(wordInfoPrats[0]);
                     var wordFrequency = int.Parse(wordInfoPrats[1]);
 
-                    yield return new WordInfo(paperIndex, wordIndex, wordFrequency);
+                    yield return new WordUsageInfo(paperIndex, wordIndex, wordFrequency);
                 }
             }
         }
