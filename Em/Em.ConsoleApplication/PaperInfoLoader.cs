@@ -6,18 +6,39 @@ namespace Em.ConsoleApplication
 {
     public class PaperInfoLoader : IDisposable
     {
-        public PaperInfoLoader(FileInfo fileInfo)
+        public PaperInfoLoader(FileInfo papersFile, FileInfo wordsFile)
         {
-            _reader = fileInfo.OpenText();
+            _wordsReader = wordsFile.OpenText();
+            _papersReader = papersFile.OpenText();
         }
 
-        private readonly StreamReader _reader;
 
-        public IEnumerable<WordUsageInfo> LoadWordInfo()
+        private readonly StreamReader _papersReader;
+        private readonly StreamReader _wordsReader;
+
+        public IEnumerable<Word> LoadWords()
         {
-            while (!_reader.EndOfStream)
+            while (!_wordsReader.EndOfStream)
             {
-                var line = _reader.ReadLine();
+                var line = _papersReader.ReadLine();
+
+                if (line == null)
+                    continue;
+
+                var lineParts = line.Split(new[] { '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                yield return new Word(
+                    id: int.Parse(lineParts[0]),
+                    text: lineParts[1],
+                    frequency: int.Parse(lineParts[2])
+                );
+            }
+        }
+
+        public IEnumerable<WordUsageInfo> LoadDocumentInfo()
+        {
+            while (!_papersReader.EndOfStream)
+            {
+                var line = _papersReader.ReadLine();
 
                 if (line == null)
                     continue;
@@ -38,7 +59,8 @@ namespace Em.ConsoleApplication
 
         public void Dispose()
         {
-            using (_reader) { }
+            using (_papersReader) { }
+            using (_wordsReader) { }
         }
     }
 }

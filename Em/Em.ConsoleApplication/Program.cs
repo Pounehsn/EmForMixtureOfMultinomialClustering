@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EmCalculation;
@@ -9,21 +10,23 @@ namespace Em.ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            if (args.Length != 3)
+            if (args.Length != 4)
             {
-                Console.WriteLine("Em.ConsoleApplication <number-of-clusters> <input-file> <output-file>");
+                Console.WriteLine("Em.ConsoleApplication <number-of-clusters> <word-input-file> <paper-input-file> <output-file>");
                 return;
             }
 
             var numberOfClusters = int.Parse(args[0]);
-            var inputFile = args[1];
-            var outputFile = args[2];
+            var wordInputFile = args[1];
+            var paperInputFile = args[2];
+            var outputFile = args[3];
+            var wordIdToString = new Dictionary<int, string>();
 
             var maxDocumentId = 0;
             var maxWordId = 0;
-            using (var loder = new PaperInfoLoader(new FileInfo(inputFile)))
+            using (var loder = new PaperInfoLoader(new FileInfo(paperInputFile), new FileInfo(wordInputFile)))
             {
-                foreach (var wordInfo in loder.LoadWordInfo())
+                foreach (var wordInfo in loder.LoadDocumentInfo())
                 {
                     if (wordInfo.WordId > maxWordId)
                         maxWordId = wordInfo.WordId;
@@ -42,12 +45,21 @@ namespace Em.ConsoleApplication
                 }
             }
 
-            using (var loder = new PaperInfoLoader(new FileInfo(inputFile)))
+            using (var loder = new PaperInfoLoader(new FileInfo(paperInputFile), new FileInfo(wordInputFile)))
             {
-                foreach (var wordInfo in loder.LoadWordInfo())
+                foreach (var wordInfo in loder.LoadDocumentInfo())
                 {
                     wordInDocumentFrequency[wordInfo.DocumentId, wordInfo.WordId] = wordInfo.WordFrequency;
                 }
+
+                Console.WriteLine("Documents are loaded.");
+
+                foreach (var word in loder.LoadWords())
+                {
+                    wordIdToString[word.Id] = word.Text;
+                }
+
+                Console.WriteLine("Words are loaded.");
             }
 
             var em = new EmAlgorithm(numberOfClusters, wordInDocumentFrequency, 0);
@@ -59,7 +71,7 @@ namespace Em.ConsoleApplication
                 for (var k = 0; k < numberOfClusters; k++)
                 {
                     textWriter.WriteLine(
-                        $"{k} : {string.Join("\t", em.GetWordsOrderedByMu(k).Take(10))}"
+                        $"{k} : {string.Join("\t", em.GetWordsOrderedByMu(k).Take(10).Select(i => wordIdToString[i]))}"
                     );
                 }
             }
