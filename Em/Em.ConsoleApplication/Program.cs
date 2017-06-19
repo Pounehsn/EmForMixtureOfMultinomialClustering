@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using EmCalculation;
 
 namespace Em.ConsoleApplication
@@ -73,12 +75,8 @@ namespace Em.ConsoleApplication
 
                 Console.WriteLine("Documents are loaded.");
 
-                var count = 0;
-
                 foreach (var word in loder.LoadWords())
                 {
-                    if (count++ % 100 == 0)
-                        Console.WriteLine($"{count} Words are loaded.");
                     wordIdToString[word.Id] = word.Text;
                 }
 
@@ -87,7 +85,26 @@ namespace Em.ConsoleApplication
 
             var em = new EmAlgorithm(numberOfClusters, wordInDocumentFrequency, maxScale, 0);
 
-            em.Train(maxNumberOfIteration, maxDurationInMinutess);
+            var trainingEnded = false;
+            var cancellationTokenSource = new CancellationTokenSource();
+            var task = Task.Run(
+                () =>
+                {
+                    var quit = false;
+                    while (!trainingEnded & !quit)
+                    {
+                        Console.WriteLine("Enter 'q' to finish training.");
+                        quit = Console.ReadLine()?.ToUpper() == "Q";
+
+                        if(quit)
+                            cancellationTokenSource.Cancel();
+                    }
+                }
+            );
+
+            em.Train(maxNumberOfIteration, maxDurationInMinutess, cancellationTokenSource.Token);
+
+            trainingEnded = true;
 
             using (var textWriter = new FileInfo(outputFile).CreateText())
             {
@@ -100,6 +117,7 @@ namespace Em.ConsoleApplication
             }
 
             Console.WriteLine("Done");
+            task.Wait(cancellationTokenSource.Token);
             Console.ReadLine();
         }
     }

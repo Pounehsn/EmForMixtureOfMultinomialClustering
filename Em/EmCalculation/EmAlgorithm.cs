@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EmCalculation
@@ -30,7 +31,7 @@ namespace EmCalculation
             }
             _nk = new BigInteger[K];
         }
-        
+
         private readonly Random _random;
         private readonly BigInteger[] _nd;
         private readonly BigInteger[] _nk;
@@ -44,7 +45,7 @@ namespace EmCalculation
         private BigInteger[,] Mu { get; }
         private BigInteger[,] E { get; }
 
-        public void Train(int maxNumberOfIteration, int maxDurationInMinutess)
+        public void Train(int maxNumberOfIteration, int maxDurationInMinutess, CancellationToken token)
         {
             Initialize();
 
@@ -54,9 +55,10 @@ namespace EmCalculation
             var previouseMu = new BigInteger[K, W];
             var iteration = 0;
             for (
-                ; 
-                iteration < maxNumberOfIteration & 
-                timer.Elapsed < new TimeSpan(0, 0, maxDurationInMinutess, 0); 
+                ;
+                iteration < maxNumberOfIteration &
+                timer.Elapsed < new TimeSpan(0, 0, maxDurationInMinutess, 0) &
+                !token.IsCancellationRequested;
                 iteration++
             )
             {
@@ -73,9 +75,9 @@ namespace EmCalculation
         }
 
         public IEnumerable<int> GetWordsOrderedByMu(int cluster) => Enumerable.Range(0, W)
-            .Select(i => new {index = i, mu = Mu[cluster, i]})
-            .OrderByDescending(i=>i.mu)
-            .Select(i=>i.index);
+            .Select(i => new { index = i, mu = Mu[cluster, i] })
+            .OrderByDescending(i => i.mu)
+            .Select(i => i.index);
 
         public int[] GetDocumentsCluster()
         {
@@ -128,7 +130,8 @@ namespace EmCalculation
                 D,
                 d =>
                 {
-                    Log($"Started iteration {iteration} document {d}.");
+                    if (iteration % 10 == 0)
+                        Log($"Started iteration {iteration} document {d}.");
                     BigInteger sum = 0;
                     for (var k = 0; k < K; k++)
                     {

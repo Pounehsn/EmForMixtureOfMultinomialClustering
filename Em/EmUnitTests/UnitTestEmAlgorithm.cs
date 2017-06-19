@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using EmCalculation;
 using NUnit.Framework;
 
@@ -27,10 +28,11 @@ namespace EmUnitTests
                     { 4, 6 }, // expected to go in cluster 1
                     { 7, 3 }  // expected to go in cluster 2
                 }, 
+                int.MaxValue,
                 1
             );
 
-            algorithm.Train(100);
+            algorithm.Train(100, 100, CancellationToken.None);
 
             //Act
             var documentClass = algorithm.GetDocumentsCluster();
@@ -57,10 +59,11 @@ namespace EmUnitTests
                     { 4, 6 }, // expected to go in cluster 1
                     { 7, 3 }  // expected to go in cluster 2
                 },
+                int.MaxValue,
                 1
             );
 
-            algorithm.Train(100);
+            algorithm.Train(100, 100, CancellationToken.None);
 
             //Act
             var wordsForK1 = algorithm.GetWordsOrderedByMu(0).ToArray();
