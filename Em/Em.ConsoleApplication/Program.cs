@@ -84,7 +84,7 @@ namespace Em.ConsoleApplication
                 for (var k = 0; k < numberOfClusters; k++)
                 {
                     textWriter.WriteLine(
-                        $"{k} : {string.Join("\t\t", em.GetWordsOrderedByMu(k).Take(10).Select(i => wordIdToString[i]))}"
+                        $"{k} : {string.Join(", ", em.GetWordsOrderedByMu(k).Take(10).Select(i => wordIdToString[i]))}"
                     );
                 }
             }
