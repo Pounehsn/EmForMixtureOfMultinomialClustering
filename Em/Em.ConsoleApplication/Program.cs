@@ -9,8 +9,15 @@ namespace Em.ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            const string inputFile = @"..\..\..\nips.libsvm";
-            const string outputFile = @"..\..\..\result.txt";
+            if (args.Length != 3)
+            {
+                Console.WriteLine("Em.ConsoleApplication <number-of-clusters> <input-file> <output-file>");
+                return;
+            }
+
+            var numberOfClusters = int.Parse(args[0]);
+            var inputFile = args[1];
+            var outputFile = args[2];
 
             var maxDocumentId = 0;
             var maxWordId = 0;
@@ -25,7 +32,6 @@ namespace Em.ConsoleApplication
                 }
             }
 
-            var numberOfClusters = int.Parse(args[0]);
             var wordInDocumentFrequency = new int[maxDocumentId + 1, maxWordId + 1];
 
             for (var i = 0; i < maxDocumentId + 1; i++)

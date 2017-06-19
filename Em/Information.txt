@@ -15,5 +15,4 @@ T[d][w]		Number of time word w is repeated in document d
 E[d][k]		Expectation for document d to end up in cluster k
 
 Result
-			k:	Pi[k]	{Mu[k, w] | w -> 1..W}
 			k:	10 MAX Mu[k,w]

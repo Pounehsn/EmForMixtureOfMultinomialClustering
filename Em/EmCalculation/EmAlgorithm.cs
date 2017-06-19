@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 
@@ -60,6 +62,35 @@ namespace EmCalculation
             }
 
             Log($"{nameof(Train)} completed in {iteration}");
+        }
+
+        public IEnumerable<int> GetWordsOrderedByMu(int cluster) => Enumerable.Range(0, D)
+            .Select(i => new {index = i, mu = Mu[cluster, i]})
+            .OrderByDescending(i=>i.mu)
+            .Select(i=>i.index);
+
+        public int[] ClassifyDocuments()
+        {
+            var result = new int[D];
+
+            for (var d = 0; d < D; d++)
+            {
+                var clusterIndex = 0;
+                var clusterExpectation = E[d, clusterIndex];
+                for (var k = 1; k < K; k++)
+                {
+                    if (!(E[d, k] > clusterExpectation))
+                        continue;
+
+                    clusterExpectation = E[d, k];
+                    clusterIndex = k;
+                }
+
+                result[d] = clusterIndex;
+            }
+
+            Log($"{nameof(ClassifyDocuments)} is completed");
+            return result;
         }
 
         private bool IsConverged(BigInteger[,] previouseMu, BigInteger[] previousePi)
@@ -147,30 +178,6 @@ namespace EmCalculation
             }
 
             Log($"{iteration} {nameof(IterationM)} completed");
-        }
-
-        public int[] ClassifyDocuments()
-        {
-            var result = new int[D];
-
-            for (var d = 0; d < D; d++)
-            {
-                var clusterIndex = 0;
-                var clusterExpectation = E[d, clusterIndex];
-                for (var k = 1; k < K; k++)
-                {
-                    if (!(E[d, k] > clusterExpectation))
-                        continue;
-
-                    clusterExpectation = E[d, k];
-                    clusterIndex = k;
-                }
-
-                result[d] = clusterIndex;
-            }
-
-            Log($"{nameof(ClassifyDocuments)} is completed");
-            return result;
         }
 
         private void Initialize()
