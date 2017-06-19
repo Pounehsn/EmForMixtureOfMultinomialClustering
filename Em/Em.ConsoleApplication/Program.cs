@@ -26,7 +26,7 @@ namespace Em.ConsoleApplication
                 }
             }
 
-            const int numberOfClusters = 5;
+            var numberOfClusters = int.Parse(args[0]);
             var wordInDocumentFrequency = new int[maxDocumentId + 1, maxWordId + 1];
 
             for (var i = 0; i < maxDocumentId + 1; i++)
