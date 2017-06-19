@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using EmCalculation;
@@ -24,6 +25,15 @@ namespace Em.ConsoleApplication
                 Console.WriteLine("Em.ConsoleApplication <number-of-clusters> <word-input-file> <paper-input-file> <output-file>");
                 return;
             }
+
+
+            var maxNumberOfIteration = int.Parse(ConfigurationManager.AppSettings.Get("MaxNumberOfIteration"));
+            var maxDurationInMinutess = int.Parse(ConfigurationManager.AppSettings.Get("MaxDurationInMinutess"));
+            var maxScale = int.Parse(ConfigurationManager.AppSettings.Get("MaxScale"));
+
+            Console.WriteLine($"{nameof(maxNumberOfIteration)} : {maxNumberOfIteration}");
+            Console.WriteLine($"{nameof(maxDurationInMinutess)} : {maxDurationInMinutess}");
+            Console.WriteLine($"{nameof(maxScale)} : {maxScale}");
 
             var numberOfClusters = int.Parse(args[0]);
             var wordInputFile = args[1];
@@ -75,9 +85,9 @@ namespace Em.ConsoleApplication
                 Console.WriteLine("All words are loaded.");
             }
 
-            var em = new EmAlgorithm(numberOfClusters, wordInDocumentFrequency, 0);
+            var em = new EmAlgorithm(numberOfClusters, wordInDocumentFrequency, maxScale, 0);
 
-            em.Train(1000);
+            em.Train(maxNumberOfIteration, maxDurationInMinutess);
 
             using (var textWriter = new FileInfo(outputFile).CreateText())
             {

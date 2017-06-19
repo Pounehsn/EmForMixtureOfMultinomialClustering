@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -8,8 +9,9 @@ namespace EmCalculation
 {
     public class EmAlgorithm : IEmAlgorithm
     {
-        public EmAlgorithm(int numberOfClusters, int[,] wordInDocumentFrequency, int randomSeed)
+        public EmAlgorithm(int numberOfClusters, int[,] wordInDocumentFrequency, int maxScale, int randomSeed)
         {
+            _maxScale = maxScale;
             _random = new Random(randomSeed);
             K = numberOfClusters;
             T = wordInDocumentFrequency;
@@ -28,12 +30,11 @@ namespace EmCalculation
             }
             _nk = new BigInteger[K];
         }
-
+        
         private readonly Random _random;
         private readonly BigInteger[] _nd;
         private readonly BigInteger[] _nk;
-
-        private const int Max = int.MaxValue;
+        private readonly int _maxScale;
 
         private int W { get; }
         private int D { get; }
@@ -43,14 +44,21 @@ namespace EmCalculation
         private BigInteger[,] Mu { get; }
         private BigInteger[,] E { get; }
 
-        public void Train(int maxIteration)
+        public void Train(int maxNumberOfIteration, int maxDurationInMinutess)
         {
             Initialize();
+
+            var timer = Stopwatch.StartNew();
 
             var previousePi = new BigInteger[K];
             var previouseMu = new BigInteger[K, W];
             var iteration = 0;
-            for (; iteration < maxIteration; iteration++)
+            for (
+                ; 
+                iteration < maxNumberOfIteration & 
+                timer.Elapsed < new TimeSpan(0, 0, maxDurationInMinutess, 0); 
+                iteration++
+            )
             {
                 Array.Copy(Pi, previousePi, K);
                 Array.Copy(Mu, previouseMu, K * W);
@@ -134,7 +142,7 @@ namespace EmCalculation
 
                     for (var k = 0; k < K; k++)
                     {
-                        E[d, k] = E[d, k] * Max / sum;
+                        E[d, k] = E[d, k] * _maxScale / sum;
                     }
                 }
             );
@@ -163,7 +171,7 @@ namespace EmCalculation
                     {
                         sum += E[d, k] * T[d, w];
                     }
-                    Mu[k, w] = sum * Max / _nk[k];
+                    Mu[k, w] = sum * _maxScale / _nk[k];
                 }
             }
 
@@ -195,7 +203,7 @@ namespace EmCalculation
 
         private void InitializePi()
         {
-            var initialValue = Max / K;
+            var initialValue = _maxScale / K;
             for (var i = 0; i < K; i++)
             {
                 Pi[i] = initialValue;
@@ -214,12 +222,12 @@ namespace EmCalculation
                 }
                 for (var w = 0; w < W; w++)
                 {
-                    Mu[k, w] = Mu[k, w] * Max / weightSum;
+                    Mu[k, w] = Mu[k, w] * _maxScale / weightSum;
                 }
             }
         }
 
         private int NextRandomFrom25To75Percent() =>
-            _random.Next(0, Max) / 2 + Max / 4;
+            _random.Next(0, _maxScale) / 2 + _maxScale / 4;
     }
 }
