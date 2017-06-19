@@ -20,7 +20,7 @@ namespace Em.ConsoleApplication
         {
             while (!_wordsReader.EndOfStream)
             {
-                var line = _papersReader.ReadLine();
+                var line = _wordsReader.ReadLine();
 
                 if (line == null)
                     continue;

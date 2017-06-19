@@ -1,5 +1,5 @@
-0 : 2	62	116	37	58	51	105	248	165	449
-1 : 2	62	75	248	116	51	886	105	58	48
-2 : 2	886	62	75	810	116	109	105	568	248
-3 : 2	248	327	37	58	75	1680	779	4815	109
-4 : 2	65	248	75	3	109	202	302	62	105
+0 : network	input	model	system	pattern	function	output	neural	set	node
+1 : network	input	unit	neural	model	function	neuron	output	pattern	layer
+2 : network	neuron	input	unit	cell	model	learning	output	circuit	neural
+3 : network	neural	point	system	pattern	unit	delay	fixed	star	learning
+4 : network	weight	neural	unit	problem	learning	algorithm	error	input	output
